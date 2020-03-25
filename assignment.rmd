@@ -1,0 +1,47 @@
+---
+title: "The effect of severe weather events on both public health and economy"
+author: "tanmay"
+date: "17/03/2020"
+output: html_document
+---
+
+```{r}
+data<-read.csv("Storm.csv")
+library(plyr)
+f<-aggregate(FATALITIES~EVTYPE,data,"sum")
+f<-arrange(f,desc(f[,2]))
+f10<-f[1:10,]
+
+i<-aggregate(INJURIES~EVTYPE,data,"sum")
+i<-arrange(i,desc(i[,2]))
+i10<-i[1:10,]
+
+ par(mfrow = c(1, 2), mar = c(10, 4, 2, 2), las = 3, cex = 0.7, cex.main = 1.4, cex.lab = 1.2)
+barplot(f10$FATALITIES, names.arg = f10$EVTYPE, col = 'red', main = 'Top 10 Weather Events for fatalities ', ylab = 'No of fatalities')
+barplot(i10$INJURIES, names.arg = i10$EVTYPE, col = 'orange',main = 'Top 10 Weather Events for injuries', ylab = 'No of injuries')
+
+p<-aggregate(PROPDMG~EVTYPE,data,"sum")
+p<-arrange(p,desc(p[,2]))
+p10<-p[1:10,]
+
+c<-aggregate(CROPDMG~EVTYPE,data,"sum")
+c<-arrange(c,desc(c[,2]))
+c10<-c[1:10,]
+
+ par(mfrow = c(1, 2), mar = c(10, 4, 2, 2), las = 3, cex = 0.7, cex.main = 1.4, cex.lab = 1.2)
+barplot(p10$PROPDMG, names.arg = p10$EVTYPE, col = 'brown', main = 'Top 10 Weather Events for property damage ', ylab = 'Amount of property damage')
+barplot(c10$CROPDMG, names.arg = c10$EVTYPE, col = 'pink', main = 'Top 10 Weather Events for crop damage ', ylab = 'Amount of crop damage')
+
+tpc<-aggregate(PROPDMG+CROPDMG~EVTYPE,data,"sum")
+names(tpc)<-c("EVTYPE","TOTALCOST")
+tpc<-arrange(tpc,desc(tpc[,2]))
+tpc10<-tpc[1:10,]
+
+ par(mfrow = c(1, 1), mar = c(10, 4, 2, 2), las = 3, cex = 0.7, cex.main = 1.4, cex.lab = 1.2)
+barplot(tpc10$TOTALCOST, names.arg = tpc10$EVTYPE, col = 'black', main = 'Top 10 Weather Events for total damage', ylab = 'Amount of damage')
+
+```
+
+
+
+
